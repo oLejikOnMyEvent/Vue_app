@@ -1,65 +1,66 @@
 <template>
  <div id="filter">
-   <input type="text" v-model="input" autofocus/>
-
+   <input type="text" class="Serch" v-model="input" placeholder="just Search"/>
+    <input type="text" class="higtlight" v-model="query" placeholder="color Search" />
    <ul>
-     <li v-for="item in filteredUsers">  <span> {{item.id}} </span>  </li>
+     <li v-for="item in filteredUsers"
+     :key="item.id">  <span> {{item.id}} </span>  </li>
    </ul>
+  <ul v-html="highlight()">
+    <li v-for="value in list"
+    :key="value.id">
+      <span>{{value}}</span>
+    </li>
+  </ul>
+
+
  </div>
 
 </template>
 
 <script>
-
-  export default {
-    data() {
-      return {
-        input: '',
-        array: [
-          {id: "100 Continue («продолжай»)"},
-          {id: "101 Switching Protocols («переключение протоколов»)"},
-          {id:" 200 OK («хорошо»)"},
-          {id:"201 Created («создано»)"},
-          {id:"202 Accepted («принято»)"},
-          {id:"203 Non-Authoritative Information («информация не авторитетна»)"},
-          {id:"204 No Content («нет содержимого»)"},
-          {id:"205 Reset Content («сбросить содержимое»)"},
-          {id:"206 Partial Content («частичное содержимое»)"},
-          {id:"207 Multi-Status («многостатусный»)"},
-          {id:"226 IM Used («использовано IM»)"},
-          {id:"300 Multiple Choices («множество выборов»)"},
-          {id:"301 Moved Permanently («перемещено навсегда»)"},
-          {id:"302 Moved Temporarily («перемещено временно»)"},
-          {id:"302 Found («найдено»)"},
-          {id:"303 See Other (смотреть другое)"},
-          {id:"304 Not Modified (не изменялось)"},
-        ]
-            }
-            },
-      computed: {
-        filteredUsers: function () {
-          return this.array.filter(function (item) {
-            return item.id.indexOf(this.input) !== -1
-          }.bind(this))
-                                    },
-
+export default {
+  data() {
+    return {
+      input: "",
+      query: " ",
+      array: [
+        { id: "100 Continue («продолжай»)" },
+        { id: "101 Switching Protocols («переключение протоколов»)" },
+        { id: " 200 OK («хорошо»)" },
+        { id: "201 Created («создано»)" },
+        { id: "202 Accepted («принято»)" }
+      ],
+      list: [
+        "100 Continue («продолжай»)",
+        "101 Switching Protocols («переключение протоколов»)",
+        "200 OK («хорошо»)",
+        "201 Created («создано»)",
+        "201 Created («создано»)",
+        "202 Accepted («принято»)"
+      ]
+    };
+  },
+  computed: {
+    filteredUsers() {
+      return this.array.filter(
+        function(item) {
+          return item.id.indexOf(this.input) !== -1;
+        }.bind(this)
+      );
+    },
+    highlight() {
+      return this.list.replace(new RegExp(this.query, "gi"), match => {
+        return '<span class="highlightText">' + match + "</span>";
+      });
+    },
+    
   }
-            }
-
-
-
-
-
-
-
-
-
+};
 </script>
 
-<style scoped lang="scss">
- span{
-   background: yellow;
-   background: none;
+<style>
+.highlightText {
+  background: yellow;
 }
-
 </style>
